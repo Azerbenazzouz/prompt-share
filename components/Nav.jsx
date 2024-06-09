@@ -17,9 +17,9 @@ const Nav = () => {
             console.log('Fetching providers');
             const res = await getProviders();
             setProviders(res);
-        }
-    )();
-    
+            }
+            )();
+            
     }, []);
 
     return (
