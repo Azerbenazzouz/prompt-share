@@ -7,16 +7,26 @@ import { useState , useEffect} from "react";
 import { signIn , signOut , useSession , getProviders } from 'next-auth/react';
 
 const Nav = () => {
-    const isUserLoggedIn = true;
+    const { data: session } = useSession();
     const [providers, setProviders] = useState(null);
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
-    useEffect(() => {(
-        async () => {
-            const res = await getProviders();
-            setProviders(res);
-        }
-    )();
+    useEffect(() => {
+        // (
+    //     async () => {
+    //         console.log('Fetching providers');
+    //         const res = await getProviders();
+    //         setProviders(res);
+    //     }
+    // )();
+
+    fetchProviders = async () => {
+        console.log('Fetching providers');
+        const res = await getProviders();
+        setProviders(res);
+    }
+    fetchProviders();
+    
     }, []);
 
     return (
@@ -28,7 +38,7 @@ const Nav = () => {
 
             {/* Desktop navigation */}
             <div className="sm:flex hidden">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex gap-3 md:gap-5">
                         <Link href="create-prompt" className="black_btn">Creat prompt</Link>
 
@@ -38,7 +48,7 @@ const Nav = () => {
                         
                         <Link href="/profile">
                             <Image 
-                                src="/assets/images/logo.svg" 
+                                src={session.user.image}
                                 width={37} height={37} alt="user" 
                                 className="rounded-full"
                                 onClick={() => setToggleDropdown((prev) => !prev)}    
@@ -64,10 +74,10 @@ const Nav = () => {
 
             {/* Mobile navigation */}
             <div className="sm:hidden flex relative">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex">
                         <Image 
-                            src="/assets/images/logo.svg" 
+                            src={session.user.image}
                             width={37} height={37} alt="user" 
                             className="rounded-full"
                             onClick={() => setToggleDropdown((prev) => !prev)}    
