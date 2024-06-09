@@ -24,7 +24,6 @@ const Feed = () => {
     const [posts, setPosts] = useState([])
 
     const handelSearchChange = (e) =>{
-        console.log(e.target.value);
         setSearchText(e.target.value);
     }
     
