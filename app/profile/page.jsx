@@ -21,12 +21,19 @@ const MyProfile = () => {
         if(session?.user.id) fetchPosts();
     },[]);
 
-    const handleEdit = () => {
-
+    const handleEdit = (post) => {
+        router.push(`/update-prompt?id=${post._id}`);
     }
 
-    const handleDelete = async () => {
+    const handleDelete = async (post) => {
+        const response = await fetch(`api/prompt/${post._id}`,{
+            method:'DELETE'
+        });
 
+        if(response.ok){
+            const data = await response.json();
+            setPosts(posts.filter(p => p._id !== data._id));
+        }
     }
 
     return (
