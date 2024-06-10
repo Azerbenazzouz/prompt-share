@@ -1,5 +1,5 @@
 import '@styles/globals.css'
-import Nav from '@components/nav';
+import Nav from '@components/Nav';
 import Provier from '@components/Provider';
 
 export const metadata = {
