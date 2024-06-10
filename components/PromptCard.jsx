@@ -45,8 +45,8 @@ const PromptCard = ({
                 <div className="copy_btn" onClick={handelCopy}>
                     <Image
                         src={copied === post.prompt ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'}
-                        width={12}
-                        height={12}
+                        width={20}
+                        height={20}
                         alt="copy icon"
                     />
                 </div>

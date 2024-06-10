@@ -19,14 +19,18 @@ const MyProfile = ({ name }) => {
         user_id : searchParams.get('id')??session?.user.id
     });
 
-
+    // check if user is logged in
+    if(searchParams.get('id')===null && !session?.user.id){
+        router.push('/');
+    }
+    
     useEffect(() => {
         const fetchPosts = async () =>{
             const response = await fetch(`api/users/${info.user_id}/posts`);
             const data = await response.json();
             setPosts(data);
             //get the name of profile
-            if(searchParams.get('id')===null){
+            if(searchParams.get('id')!=null){
                 setInfo({
                     ...info,
                     name : data[0]?.creator?.name,
