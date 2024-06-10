@@ -54,6 +54,7 @@ const Feed = () => {
             setLoading(false)
         }
         fetchPosts();
+        setLoading(false)
     },[]);
 
     const handelTagClick = async (tag) => {
