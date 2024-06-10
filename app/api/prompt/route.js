@@ -5,7 +5,7 @@ export const  GET = async (req) => {
     try{
         await connectToDatabase();
         
-        const prompts = await Prompt.find({}).populate('creator');
+        const prompts = await Prompt.find({}).populate('creator').sort({ createdAt: 1 });
         return new Response(JSON.stringify(prompts),{
             status: 200
         });
@@ -28,7 +28,7 @@ export const  POST = async (req) => {
                 {prompt:{$regex: searchText, $options: 'i'}},
                 {tag:{$regex: searchText, $options: 'i'}}
             ]
-        }).populate('creator');
+        }).populate('creator').sort({ createdAt: -1 });
 
         return new Response(JSON.stringify(prompts),{
             status: 200
