@@ -2,7 +2,7 @@
 
 import { useState , useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter , useSearchParams} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import Profile from '@/components/Profile'
 
@@ -10,17 +10,18 @@ const MyProfile = () => {
 
     const { data: session } = useSession();
     const router = useRouter();
-    const searchParams = useSearchParams();
+    const searchParams = router.query
+    const userId = router.query?.id;
 
     const [posts, setPosts] = useState([])
     const [ info , setInfo ] = useState({
         name : "My",
         desc : "Welcome to your profile",
-        user_id : searchParams.get('id')??session?.user.id
+        user_id : userId??session?.user.id
     });
 
     // check if user is logged in
-    if(searchParams.get('id')===null && !session?.user.id){
+    if(userId===null && !session?.user.id){
         router.push('/');
     }
     
@@ -30,7 +31,7 @@ const MyProfile = () => {
             const data = await response.json();
             setPosts(data);
             //get the name of profile
-            if(searchParams.get('id')!=null){
+            if(userId!=null){
                 setInfo({
                     ...info,
                     name : data[0]?.creator?.name,
@@ -39,7 +40,7 @@ const MyProfile = () => {
             }
         }
         if(info.user_id) fetchPosts();
-    },[info,searchParams.get('id')]);
+    },[info,userId]);
 
     const handleEdit = (post) => {
         router.push(`/update-prompt?id=${post._id}`);
