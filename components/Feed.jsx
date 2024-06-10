@@ -11,7 +11,7 @@ const PromptCardList = ({ data , handelTagClick }) =>{
                 <PromptCard
                     key={post._id}
                     post={post}
-                    handelTagClick={handelTagClick}
+                    handelTagClick={()=>handelTagClick(post.tag)}
                 />
             ))}
         </div>
@@ -55,6 +55,23 @@ const Feed = () => {
         }
         fetchPosts();
     },[]);
+
+    const handelTagClick = async (tag) => {
+        setSearchText(tag);
+        setLoading(true);
+
+        const response =!tag || tag === "" ?  await fetch('api/prompt') : await fetch('api/prompt',{
+            method:'POST',
+            body: JSON.stringify({
+                searchText: tag,
+            })
+        });
+
+        const data = await response.json();
+
+        setPosts(data);
+        setLoading(false)
+    }
     return (
         <section className="feed">
             <form className="relative w-full flex-center" onSubmit={e => handelSearchSubmit(e)}>
@@ -76,7 +93,7 @@ const Feed = () => {
                     posts.length !=0 && loading==false ? (
                         <PromptCardList
                             data={posts}
-                            handelTagClick={()=>{}}
+                            handelTagClick={handelTagClick}
                         />
                     ) : (
                         <h1 className="text-center mt-16 text-2xl orange_gradient">No Posts...</h1>
