@@ -10,37 +10,26 @@ const MyProfile = () => {
 
     const { data: session } = useSession();
     const router = useRouter();
-    const searchParams = router.query
-    const userId = router.query?.id;
+    const userId = session?.user.id;
 
     const [posts, setPosts] = useState([])
-    const [ info , setInfo ] = useState({
-        name : "My",
-        desc : "Welcome to your profile",
-        user_id : userId??session?.user.id
-    });
+    const [loading, setLoading] = useState(true);
 
     // check if user is logged in
-    if(userId===null && !session?.user.id){
+    if(userId===null){
         router.push('/');
     }
     
     useEffect(() => {
         const fetchPosts = async () =>{
-            const response = await fetch(`api/users/${info.user_id}/posts`);
+            setLoading(true);
+            const response = await fetch(`/api/users/${userId}/posts`);
             const data = await response.json();
             setPosts(data);
-            //get the name of profile
-            if(userId!=null){
-                setInfo({
-                    ...info,
-                    name : data[0]?.creator?.name,
-                    desc : "Welcome to "+data[0]?.creator?.name+" profile"
-                });
-            }
+            setLoading(false);
         }
-        if(info.user_id) fetchPosts();
-    },[info,userId]);
+        if(userId) fetchPosts();
+    },[userId]);
 
     const handleEdit = (post) => {
         router.push(`/update-prompt?id=${post._id}`);
@@ -58,13 +47,28 @@ const MyProfile = () => {
     }
 
     return (
-        <Profile
-            name={info.name}
-            desc={info.desc}
-            data={posts}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-        />
+        loading ? 
+                (
+                    <h1 
+                        className="text-center text-3xl font-bold green_gradient mt-16"
+                    >
+                        Loading...
+                    </h1>
+                ) : (
+                    posts.length != 0 ? (
+                        <Profile
+                            name="My"
+                            desc="Welcome to your profile"
+                            data={posts}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                        />
+                    ):(
+                        <h1 className="text-center text-3xl font-bold orange_gradient mt-16">
+                            No Data...
+                        </h1>
+                    )
+                )
     )
 }
 
