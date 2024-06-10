@@ -14,7 +14,6 @@ const Nav = () => {
     useEffect(() => {
     (
         async () => {
-            console.log('Fetching providers');
             const res = await getProviders();
             setProviders(res);
             }
