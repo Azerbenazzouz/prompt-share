@@ -6,7 +6,7 @@ import { useRouter , useSearchParams} from "next/navigation";
 
 import Profile from '@/components/Profile'
 
-const MyProfile = ({ name }) => {
+const MyProfile = () => {
 
     const { data: session } = useSession();
     const router = useRouter();
