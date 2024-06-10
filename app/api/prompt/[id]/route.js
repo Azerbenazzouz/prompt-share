@@ -22,7 +22,6 @@ export const  GET = async (req , { params }) => {
 // PATCH
 export const  PATCH = async (req , { params , body }) => {
     const { prompt , tag } = await req.json();
-    console.log(prompt , tag)
     try {
         await connectToDatabase();
         const existingPrompt = await Prompt.findById(params.id)

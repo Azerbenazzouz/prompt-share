@@ -11,6 +11,7 @@ const PromptCard = ({
         handelTagClick,
         handelEdit,
         handelDelete,
+        setOpen,
     }) => {
     const { data: session } = useSession();
     const pathName  = usePathname();
@@ -22,7 +23,6 @@ const PromptCard = ({
         navigator.clipboard.writeText(post.prompt);
         setTimeout(() => setCopied(""), 3000);
     }
-
     return (
         <div className="prompt_card">
             <div className="flex justify-content-between items-start gap-5">
@@ -60,11 +60,11 @@ const PromptCard = ({
                     <p className="font-inter text-sm green_gradient cursor-pointer" onClick={handelEdit}>
                         Edit
                     </p>
-                    <p className="font-inter text-sm orange_gradient cursor-pointer" onClick={handelDelete}>
+                    <p className="font-inter text-sm orange_gradient cursor-pointer" onClick={()=>{handelDelete();setOpen(true)}} >
                         Delete
                     </p>
                 </div>
-            )}    
+            )}
         </div>
     )
 }
