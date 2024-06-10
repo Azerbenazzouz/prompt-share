@@ -39,7 +39,7 @@ const MyProfile = () => {
             }
         }
         if(info.user_id) fetchPosts();
-    },[]);
+    },[info,searchParams.get('id')]);
 
     const handleEdit = (post) => {
         router.push(`/update-prompt?id=${post._id}`);
